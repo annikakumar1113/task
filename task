@@ -1,0 +1,44 @@
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+
+import java.io.File;
+import java.io.IOException;
+
+public class GitForkAndClone {
+    public static void main(String[] args) {
+        // Replace with your GitHub username and the repository name
+        String githubUsername = "your-username";
+        String repositoryName = "repository-name";
+
+        String forkedRepositoryUrl = "https://github.com/" + githubUsername + "/" + repositoryName + ".git";
+        String localClonePath = "path/to/local/clone";
+
+        try {
+            // Fork the repository on GitHub manually first.
+            
+            // Clone the forked repository to your local machine
+            cloneRepository(forkedRepositoryUrl, localClonePath);
+
+            System.out.println("Fork and clone completed successfully.");
+        } catch (IOException | GitAPIException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void cloneRepository(String repositoryUrl, String localPath) throws IOException, GitAPIException {
+        // Create a local directory for the clone if it doesn't exist
+        File localDir = new File(localPath);
+        if (!localDir.exists()) {
+            localDir.mkdirs();
+        }
+
+        // Clone the repository
+        Git.cloneRepository()
+                .setURI(repositoryUrl)
+                .setDirectory(localDir)
+                .call();
+    }
+}
+
